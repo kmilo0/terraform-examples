@@ -12,3 +12,5 @@ And the content of the file is
 aws_access_key_id=my-access-key
 aws_secret_access_key=my-secret-key
 ```
+
+More info about the AWS Provider Authentication and Configuration could be fount at https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration
