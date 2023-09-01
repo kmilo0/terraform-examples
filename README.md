@@ -1,6 +1,4 @@
-# terraform-examples
-
-## AWS Credentials
+# AWS Credentials
 
 To run the AWS examples you will need the AWS credentials, they could be setup in the file
 
