@@ -1,6 +1,11 @@
 # Configure the AWS Provider
 provider "aws" {
+  region = local.region
+}
+
+locals {
   region = "us-east-1"
+  avail_zone = "${local.region}a"  
 }
 
 # Creates 1 VPC with
@@ -19,6 +24,6 @@ module "vpc" {
 
   name = "my-vpc"
 
-  azs = ["us-east-1a"]
+  azs = [local.avail_zone]
   public_subnets  = ["10.0.101.0/24"]  
 }
