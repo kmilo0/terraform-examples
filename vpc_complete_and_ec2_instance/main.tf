@@ -1,6 +1,7 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = local.region
+  profile = "terraform"
+  region = local.region  
 }
 
 locals {

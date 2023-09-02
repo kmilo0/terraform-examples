@@ -1,6 +1,7 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  profile = "terraform"
+  region = "us-east-1"  
 }
 
 # Creates 1 VPC with 

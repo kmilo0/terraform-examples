@@ -1,6 +1,6 @@
 # AWS Credentials
 
-To run the AWS examples you will need the AWS credentials, they could be setup in the file
+To run the AWS examples you will need your AWS credentials, they could be setup in the file
 
 - Linux: $HOME/.aws/credentials
 - Windows: "%USERPROFILE%\.aws\credentials"
@@ -8,7 +8,7 @@ To run the AWS examples you will need the AWS credentials, they could be setup i
 And the content of the file is
 
 ```
-[default]
+[terraform]
 aws_access_key_id=my-access-key
 aws_secret_access_key=my-secret-key
 ```
