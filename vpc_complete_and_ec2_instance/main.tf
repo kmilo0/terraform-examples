@@ -17,11 +17,11 @@ variable public_key_location {}
 # 1 default Security Group
 
 # public_subnets creates
+# 1 internet gateway
 # 1 subnet
 # 1 non-default route table
 #   1 association with the subnet
 #   1 route with destination 0.0.0.0/0 and the target is the Internet gateway
-# 1 internet gateway
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 

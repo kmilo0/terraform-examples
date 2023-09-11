@@ -15,6 +15,7 @@ locals {
 # 1 default Security Group
 
 # public_subnets creates
+# 1 internet gateway
 # 1 subnet
 # 1 non-default route table
 #   1 association with the subnet
