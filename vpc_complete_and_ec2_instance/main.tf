@@ -19,7 +19,7 @@ variable public_key_location {}
 # public_subnets creates
 # 1 subnet
 # 1 non-default route table
-#   1 associated with the subnet
+#   1 association with the subnet
 #   1 route with destination 0.0.0.0/0 and the target is the Internet gateway
 # 1 internet gateway
 module "vpc" {
