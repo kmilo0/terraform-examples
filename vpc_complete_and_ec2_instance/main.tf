@@ -11,13 +11,15 @@ locals {
 
 variable public_key_location {}
 
-# Creates 1 VPC with
+# terraform-aws-modules/vpc/aws creates
+# 1 VPC with
 # 1 default Route table
 # 1 default Network ACL
-# 1 default Security Group
+# 1 default Security Group WITHOUT RULES
 
 # public_subnets creates
 # 1 internet gateway
+#   1 association with the vpc
 # 1 subnet
 # 1 non-default route table
 #   1 association with the subnet
@@ -26,19 +28,10 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "my-vpc"
-
-  azs = [local.avail_zone]
-  public_subnets  = ["10.0.101.0/24"]  
-}
-
-data "aws_ami" "latest-amazon-linux-image" {
-  most_recent = true
-  owners           = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-kernel*-x86_64-gp2"]
-  }
+  cidr = "10.16.0.0/16"
+  
+  public_subnets  = ["10.16.101.0/24"]
+  azs = [local.avail_zone]    
 }
 
 resource "aws_security_group" "myapp-sg" {
@@ -59,6 +52,7 @@ resource "aws_security_group" "myapp-sg" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
+    # egress rule ALLOW ALL. By default terraform doesn't have this rule, but AWS does.
     egress {
         from_port = 0
         to_port = 0
@@ -77,6 +71,19 @@ resource "aws_key_pair" "ssh-key" {
     public_key = file(var.public_key_location)
 }
 
+data "aws_ami" "latest-amazon-linux-image" {
+  most_recent = true
+  owners           = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-kernel*-x86_64-gp2"]
+  }
+}
+
+# Creates 1 instance
+# 1 ENI
+# 1 EC2Volume
 resource "aws_instance" "web" {
   ami = data.aws_ami.latest-amazon-linux-image.id
   instance_type = "t2.micro"
@@ -97,9 +104,14 @@ resource "aws_instance" "web" {
 }
 
 output "aws_ami" {
-  value       = data.aws_ami.latest-amazon-linux-image.description
+  value       = data.aws_ami.latest-amazon-linux-image.description  
 }
 
-output "aws_instance_public_ip" {
-    value = aws_instance.web.public_ip
+output "aws_ssh_instance_public_ip" {
+    value = "ssh ec2-user@${aws_instance.web.public_ip}"
 }
+
+output "aws_http_instance_public_ip" {
+    value = "http://${aws_instance.web.public_ip}"
+}
+
