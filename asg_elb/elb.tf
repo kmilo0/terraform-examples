@@ -1,10 +1,7 @@
 resource "aws_elb" "my-elb" {
   name            = "my-elb"
-  #subnets         = [aws_subnet.main-public-1.id, aws_subnet.main-public-2.id]
   subnets = module.vpc.public_subnets
-
   security_groups = [aws_security_group.elb-securitygroup.id]
-
  
   listener {
     instance_port     = 80
