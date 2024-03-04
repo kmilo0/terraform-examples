@@ -81,37 +81,60 @@ data "aws_ami" "latest-amazon-linux-image" {
   }
 }
 
-# Creates 1 instance
-# 1 ENI
-# 1 EC2Volume
-resource "aws_instance" "web" {
-  ami = data.aws_ami.latest-amazon-linux-image.id
+# ASG
+resource "aws_launch_template" "example-launchtemplate" {
+  name_prefix     = "example-launchtemplate"
+  image_id        = data.aws_ami.latest-amazon-linux-image.id
   instance_type = "t2.micro"
 
-  subnet_id = module.vpc.public_subnets[0]
-  vpc_security_group_ids = [aws_security_group.myapp-sg.id]
-  availability_zone = local.avail_zone
-
-  associate_public_ip_address = true
-  key_name = aws_key_pair.ssh-key.key_name
-
-  user_data = file("entry-script.sh")
-
-  tags = {
-      Name = "web"
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups = [aws_security_group.myapp-sg.id]
   }
 
+  key_name        = aws_key_pair.ssh-key.key_name
+  user_data = filebase64("entry-script.sh")
+}
+
+resource "aws_autoscaling_group" "example-autoscaling" {
+  name                      = "example-autoscaling"
+  vpc_zone_identifier       = module.vpc.public_subnets
+
+  launch_template {
+    id      = aws_launch_template.example-launchtemplate.id
+    version = aws_launch_template.example-launchtemplate.latest_version
+  }
+
+  min_size                  = 1
+  max_size                  = 2
+  health_check_grace_period = 300
+  health_check_type         = "EC2"
+  force_delete              = true
+
+  tag {
+    key                 = "Name"
+    value               = "ec2 instance"
+    propagate_at_launch = true
+  }
 }
 
 output "aws_ami" {
   value       = data.aws_ami.latest-amazon-linux-image.description  
 }
 
-output "aws_instance_ssh_public_ip" {
-    value = "ssh ec2-user@${aws_instance.web.public_ip}"
+output "asg_name" {
+  value = aws_autoscaling_group.example-autoscaling.name
 }
 
-output "aws_instance_http_public_ip" {
-    value = "http://${aws_instance.web.public_ip}"
+output "public_ip" {
+    value = "Go to the ec2 console to get the public ip of the instance"
+}
+
+output "ssh_public_ip" {
+    value = "ssh ec2-user@<public_ip>"
+}
+
+output "http_public_ip" {
+    value = "http://<public_ip>"
 }
 

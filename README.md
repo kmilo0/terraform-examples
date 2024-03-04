@@ -32,14 +32,15 @@ terraform apply
 terraform destroy
 ```
 
-# terraform version
+# Terraform version
 
 This was tested with Terraform v1.7.4
 
-# Demo overview
+# Examples overview
 
-| Demo Directory                | Description                        |
+| Example Directory             | Description                        |
 | ----------------------------- | ---------------------------------- |
 | vpc_simple                    | Basic vpc                          |
 | vpc_complete                  | Fully fledged vpc                  |
 | vpc_complete_and_ec2_instance | Fully fledged vpc and ec2 instance |
+| asg                           | Auto Scaling Group                 |
