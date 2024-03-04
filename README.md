@@ -38,9 +38,10 @@ This was tested with Terraform v1.7.4
 
 # Examples overview
 
-| Example Directory             | Description                        |
-| ----------------------------- | ---------------------------------- |
-| vpc_simple                    | Basic vpc                          |
-| vpc_complete                  | Fully fledged vpc                  |
-| vpc_complete_and_ec2_instance | Fully fledged vpc and ec2 instance |
-| asg                           | Auto Scaling Group                 |
+| Example Directory         | Description                        |
+| ------------------------- | ---------------------------------- |
+| vpc_simple                | Basic vpc                          |
+| vpc_complete              | Fully fledged vpc                  |
+| vpc_complete_ec2_instance | Fully fledged vpc and ec2 instance |
+| asg                       | Auto Scaling Group                 |
+| asg_elb                   | Auto Scaling Group and ELB         |

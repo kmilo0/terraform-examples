@@ -8,3 +8,4 @@ locals {
   region = "us-east-1"
   avail_zone = "${local.region}a"  
 }
+
