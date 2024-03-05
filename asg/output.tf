@@ -3,7 +3,7 @@ output "aws_ami" {
 }
 
 output "asg_name" {
-  value = aws_autoscaling_group.example-autoscaling.name
+  value = module.asg.autoscaling_group_name
 }
 
 output "public_ip" {
